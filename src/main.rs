@@ -1,4 +1,5 @@
 use clap::{arg, Command};
+use webbrowser;
 
 fn main() {
     let matches = Command::new("devops")
@@ -9,5 +10,12 @@ fn main() {
         .get_matches();
 
     let id = matches.get_one::<String>("id").expect("required");
-    println!("id: {:?}", id);
+    let path = format!(
+        "https://dev.azure.com/OptumStore/OptumStoreShared/_workitems/edit/{}",
+        id
+    );
+
+    if webbrowser::open(&path).is_ok() {
+        println!("Ticket {:?} opened in browser ✅", id);
+    }
 }
